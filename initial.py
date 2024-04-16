@@ -1,4 +1,13 @@
-#!python
+import sys
+
+if __name__ != "__coreformcubit__":
+    if "win" in sys.platform:
+        path_to_cubit = r"C:\Program Files\Coreform Cubit 2024.3\bin"
+    elif "lin" in sys.platform:
+        path_to_cubit = r"/opt/Coreform-Cubit-2024.3/bin"
+    import cubit
+    cubit.init([])
+
 import numpy
 
 cubitHexNodeCoords = {
