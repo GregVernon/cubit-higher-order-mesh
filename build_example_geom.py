@@ -1,14 +1,15 @@
-import sys
+import coreform_utils
 
 if __name__ != "__coreformcubit__":
-    if "win" in sys.platform:
-        path_to_cubit = r"C:\Program Files\Coreform Cubit 2024.3\bin"
-    elif "lin" in sys.platform:
-        path_to_cubit = r"/opt/Coreform-Cubit-2024.3/bin"
-    import cubit
-    cubit.init([])
+    cubit = coreform_utils.import_cubit()
+
+CUBIT_MODE = "performance"
 
 def knuckle():
+    if CUBIT_MODE == "performance":
+        coreform_utils.set_performance_mode()
+    elif CUBIT_MODE == "interactive":
+        coreform_utils.set_interactive_mode()
     cubit.cmd( "reset" )
     cubit.cmd( "import acis './geom/knuckle.sat' nofreesurfaces heal attributes_on  separate_bodies" )
     cubit.cmd( "remove surface 15 extend" )
@@ -46,8 +47,13 @@ def knuckle():
     cubit.cmd( "volume 1 4 7 10 scheme submap" )
     cubit.cmd( "volume 3 6 9 12 scheme map" )
     cubit.cmd( "mesh vol all" )
+    coreform_utils.set_interactive_mode()
 
 def quarter_cylinder():
+    if CUBIT_MODE == "performance":
+        coreform_utils.set_performance_mode()
+    elif CUBIT_MODE == "interactive":
+        coreform_utils.set_interactive_mode()
     cubit.cmd( "reset" )
     cubit.cmd( "create Cylinder height 1 radius 1" )
     cubit.cmd( "create Cylinder height 1 radius 0.75" )
@@ -57,3 +63,4 @@ def quarter_cylinder():
     cubit.cmd( "compress ids" )
     cubit.cmd( "vol all interval 1" )
     cubit.cmd( "mesh vol 1" )
+    coreform_utils.set_interactive_mode()

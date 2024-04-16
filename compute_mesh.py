@@ -1,14 +1,8 @@
-import sys
+import numpy
+import coreform_utils
 
 if __name__ != "__coreformcubit__":
-    if "win" in sys.platform:
-        path_to_cubit = r"C:\Program Files\Coreform Cubit 2024.3\bin"
-    elif "lin" in sys.platform:
-        path_to_cubit = r"/opt/Coreform-Cubit-2024.3/bin"
-    import cubit
-    cubit.init([])
-
-import numpy
+    cubit = coreform_utils.import_cubit()
 
 cubitHexNodeCoords = {
                         0: ( -1, -1, +1 ), # ( -X, -Y, +Z )
@@ -306,9 +300,3 @@ def getHighOrderNodeCoords( elem_id, degree ):
             xi = param_coords[(i,j,k)]
             deform_coords[local_node_id,:] = linearHexMapping( elem_id, xi )
   return deform_coords
-
-E = cubit.get_entities( "hex" )
-for eid in E:
-  P = getHighOrderNodeCoords( eid, (3, 3, 3) )
-  for i in range( 0, P.shape[0] ):
-    cubit.cmd( f"create vertex x {P[i,0]} y {P[i,1]} z {P[i,2]}" )
