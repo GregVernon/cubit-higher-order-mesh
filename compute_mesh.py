@@ -102,20 +102,20 @@ def getUniformNodeIDs( degree ):
   return nodes
 
 def getLinearHexNodeCoords( elem_id ):
-  node_coords = numpy.zeros( shape=( 8, 3 ) )
+  node_coords = numpy.zeros( shape=(8, 3), dtype="double" )
   node_ids = cubit.get_connectivity( "hex", elem_id )
   for n in range( 0, 8 ):
     node_coords[n,:] = cubit.get_nodal_coordinates( node_ids[cubitNodesInTPNodes[n]] )
   return node_coords
 
 def evalLinearHexBasisVector( xi ):
-  degree = [1,1,1]
-  basis = numpy.zeros( 8 )
+  degree = ( 1, 1, 1 )
+  basis = numpy.zeros( shape=(8,), dtype="double" )
   n = 0
-  for k in range( 0, 2 ):
-    for j in range( 0, 2 ):
-      for i in range( 0, 2 ):
-        basis[n] = evalLagrangeBasis3D( degree, [i,j,k], xi )
+  for k in range( 0, degree[2] + 1 ):
+    for j in range( 0, degree[1] + 1 ):
+      for i in range( 0, degree[0] + 1 ):
+        basis[n] = evalLagrangeBasis3D( degree, (i, j, k), xi )
         n += 1
   return basis
 
